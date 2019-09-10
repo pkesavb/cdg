@@ -1,0 +1,55 @@
+{
+  "appId": "7666ac5d-c1b4-4382-8e59-b25f80087bf4",
+  "appTopologyRef": "{{.RouterName}}",
+  "sources": [
+    {
+      "id": "{{.UniqueId}}35",
+      "name": "{{.RouterName}}",
+      "collectorType": "SNMP",
+      "sensorConfigs": [
+           {
+            "path": "IF-MIB",
+              "cadence": {{.SNMPPollingInterval}}
+            }
+      ],
+      "deviceSet": [
+        {
+         "name": "{{.RouterName}}",
+          "software": "IOSXR",
+          "transport": "TELNET",
+          "deviceAddress": {
+            "host": "{{.RouterIP}}",
+            "port": "23"
+          },
+          "username": "{{.RouterUsername}}",
+          "password": "{{.RouterPassword}}",
+          "vendor": "cisco"
+        }
+      ]
+    }
+  ],
+  "sinks": [
+    {
+      "id": "{{.UniqueId}}37",
+      "name": "sink2",
+      "parentIds": [
+        "{{.UniqueId}}35"
+      ],
+      "outputTarget": {
+        "messageBusTarget": {
+          "brokerAddresses": [
+            {
+              "host": "198.18.134.26",
+              "port": 29092
+            }
+          ],
+          "username": "nicola",
+          "password": "nicola-secret",
+          "destinationTopic": "{{.KafkaTopic}}",
+          "certificateKey": ""
+        }
+      }
+    }
+  ],
+  "secretKey": "skey"
+}

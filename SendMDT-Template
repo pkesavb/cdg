@@ -1,0 +1,71 @@
+{
+  "appId": "7666ac5d-c1b4-4382-8e59-b25f80087bf4",
+  "appTopologyRef": "{{.RouterName}} MDT Generic Counters",
+  "sources": [
+    {
+      "id": "{{.UniqueId}}",
+      "name": "source1",
+      "collectorType": "MDT",
+      "sensorConfigs": [
+        {
+          "path": "{{.SensorPath}}",
+          "cadence": 60
+        }
+      ],
+      "deviceSet": [
+        {
+         "name": "Router{{.RouterName}}",
+          "software": "IOSXR",
+          "transport": "GRPC_DIALIN",
+          "deviceAddress": {
+            "host": "{{.RouterIP}}",
+            "port": "28000"
+          },
+          "username": "cisco",
+          "password": "cisco",
+          "vendor": "cisco"
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "id": "7cd0e2f7-3259-4ac4-aaef-c752d1e90d28",
+      "name": "PrettyPrint",
+      "parentIds": [
+        "{{.UniqueId}}"
+      ],
+      "keyValueConfigs": [
+        {
+                "key": "[0-9]+",
+                "value": "*"
+        }
+      ]
+    }
+  ],
+
+  "sinks": [
+    {
+      "id": "{{.UniqueId}}35",
+      "name": "sink2",
+      "parentIds": [
+        "7cd0e2f7-3259-4ac4-aaef-c752d1e90d28"
+      ],
+      "outputTarget": {
+        "messageBusTarget": {
+          "brokerAddresses": [
+            {
+              "host": "198.18.134.26",
+              "port": 29092
+            }
+          ],
+          "username": "nicola",
+          "password": "nicola-secret",
+          "destinationTopic": "generic-counters",
+          "certificateKey": ""
+        }
+      }
+    }
+  ],
+  "secretKey": "skey"
+}

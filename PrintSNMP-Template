@@ -1,0 +1,63 @@
+
+{
+   "collection-job-id": "{{.UniqueId}}"",
+   "collectorType": "SNMP",
+   "deviceGroups": [
+      {
+         "id": "deviceGroup1",
+      "devices": [
+            {
+               "name": "{{.RouterName}}"
+               "host": "{{.RouterIP}}"
+        }
+      ]
+    }
+  ],
+     "deviceParams": [
+        {
+           "key": "snmpVersion",
+           "value": "V2"
+    },
+        {
+           "key": "snmpCommunityString",
+           "value": "public"
+    }
+  ],
+   "sources": [
+      {
+         "name": "{{.UniqueId}}35",
+         "deviceGroupIds": [
+            "deviceGroup1"
+      ],
+      "sensorConfigs": [
+           {
+            "path": "IF-MIB",
+              "cadence": {{.SNMPPollingInterval}}
+            }
+      ]
+    }
+  ],
+   "sinks": [
+      {
+         "name": "{{.UniqueId}}37",
+         "parentIds": [
+            "{{.UniqueId}}35"
+      ],
+         "outputTarget": {
+            "messageBusTarget": {
+               "brokerAddresses": [
+                  {
+                     "host": "198.18.134.26",
+                     "port": 29092
+            }
+          ],
+               "username": "",
+               "password": "",
+               "destinationTopic": "{{.KafkaTopic}}",
+               "certificateKey": ""
+        }
+      }
+    }
+  ],
+   "secretKey": "skey"
+}

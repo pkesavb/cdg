@@ -1,0 +1,65 @@
+{
+  "collection-job-id": "{{.UniqueId}}",
+  "collectorType": "MDT",
+  "deviceGroups": [
+    {
+      "id": "deviceGroup1",
+  "devices": [
+        {
+             "name": "Router{{.RouterName}}"
+             "host": "{{.RouterIP}}"
+       }
+      ]
+    }
+  ],
+      "deviceParams": [
+        {
+          "key": "transport",
+          "value": "GRPC_DIALIN"
+        },
+        {
+          "key": "port",
+          "value": "28000"
+        }
+      ],
+
+  "sources": [
+    {
+      "sensorConfigId": "sensor-id-1",
+      "name": "source1",
+      "deviceGroupIds": [
+        "deviceGroup1"
+      ],
+      "sensorConfigs": [
+        {
+          "sensorConfigId": "sensor-id-2",
+          "path": "{{.SensorPath}}"
+        }
+      ]
+    }
+  ],
+  "sinks": [
+    {
+      "id": "{{.UniqueId}}35",
+      "name": "sink2",
+      "parentIds": [
+        "{{.UniqueId}}"
+      ],
+      "outputTarget": {
+        "messageBusTarget": {
+          "brokerAddresses": [
+            {
+              "host": "198.18.134.26",
+              "port": 29092
+            }
+          ],
+          "username": "",
+          "password": "",
+          "destinationTopic": "{{.KafkaTopic}}",
+          "certificateKey": ""
+        }
+      }
+    }
+  ],
+  "secretKey": "skey"
+}
